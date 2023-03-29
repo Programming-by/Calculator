@@ -5,50 +5,76 @@ class clsCalculator {
 
 private:
 
-	int _number = 0;
+	string LastOperation = "";
+	float PreviousResult = 0;
+	float LastNumber = 0;
+	float _Result = 0;
+
+
+	bool IsZero(int Number) {
+		return Number == 0;
+	}
+
 
 public:
 
 	void Clear() {
-		_number = 0;
+		LastNumber = 0;
+		PreviousResult = 0;
+		LastOperation = "Clear";
+		_Result = 0;
 	}
 
-	void Add(int number) {
-		cout << "Result After Adding " << number;
-		_number += number;
+	void Add(float number) {
+		LastNumber = number;
+		PreviousResult = _Result;
+		LastOperation = "Adding";
+		_Result += number;
 	}
 
-	void Subtract(int number) {
-		cout << "Result After Subtracting " << number;
+	void Subtract(float number) {
+		PreviousResult = _Result;
+		LastNumber = number;
+		LastOperation = "Subtracting";
 
-		_number -= number;
+		_Result -= number;
 	}
 
-	void Multiply(int number) {
-		cout << "Result After Multiplying " << number;
-
-		_number *= number;
+	void Multiply(float number) {
+		LastNumber = number;
+		PreviousResult = _Result;
+		LastOperation = "Multiplying";
+		_Result *= number;
 	}
 
 
-	void Divide(int number) {
-		if (number == 0) {
+	void Divide(float number) {
+
+		LastNumber = number;
+		if (IsZero(number)) {
 			number = 1;
 		}
-		cout << "Result After Dividing " << number;
-
-
-		_number /= number;
+		PreviousResult = _Result;
+		LastOperation = "Dividing";
+		_Result /= number;
 	}
+	
+	float GetFinalResults() {
+		return _Result;
+	}
+	void CancelLastResult() {
+		LastNumber = 0;
+		LastOperation = "Canceling Last Operation";
+		_Result = PreviousResult;
 
+	}
 	void PrintResults() {
-		while (_number == 0) {
-			cout << "Result After Clear " << _number << " is: " << _number;
-
-			return;
-		}
-		cout << " is: " << _number << endl;
+		cout << "Result ";
+		cout <<"After "  << LastOperation << " " << LastNumber << " is: " << _Result << endl;
 	}
+
+
+
 };
 
 int main()
@@ -74,6 +100,10 @@ int main()
 
 	Calculator1.Multiply(3);
 	Calculator1.PrintResults();
+
+	Calculator1.CancelLastResult();
+	Calculator1.PrintResults();
+
 
 	Calculator1.Clear();
 	Calculator1.PrintResults();
